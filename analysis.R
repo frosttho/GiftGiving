@@ -19,15 +19,13 @@
 
 # 00 - Setup #############################
 
-setwd("~/Studium/Master/Module/5A2M21 Advanced Topics in Digital Marketing/Gruppenarbeit")
-
 library(tidyverse)
 
 
 
 # 01 - Read data #########################
 
-surveydata <- read_csv(file = "results-survey282822_20211004-1405-codes.csv")
+surveydata <- read_csv(file = "results-survey282822_20211004-1449.csv")
 
 # delete incomplete answers
 surveydata <- filter(surveydata, !is.na(submitdate))
