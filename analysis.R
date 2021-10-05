@@ -25,7 +25,8 @@ library(tidyverse)
 
 # 01 - Read data #########################
 
-surveydata <- read_csv(file = "results-survey282822_20211004-1449.csv")
+# surveydata <- read_csv(file = "results-survey282822_20211004-1449.csv")
+surveydata <- read_csv(file = "results-survey282822_20211005-1218.csv")
 
 # delete incomplete answers
 surveydata <- filter(surveydata, !is.na(submitdate))
