@@ -141,6 +141,9 @@ surveydata1 <- subset(surveydata1, select = - c(G01Q11, G02Q08, G02Q09, G02Q12))
 # 04 - Descriptive analysis ##############
 summary(surveydata1)
 
+# Plot Histogram of One Variable
+hist(surveydata1$`Chocolate, Pralines`)
+
 # different gift items (G02Q07)
 items <- c('Seads', 'Spices', 'Chocolate, Pralines', 'Coffee / Tea', 'Food / sweats in general', 'Specialties from the whole country / EU / world', 'Flowers', 'Candles', 'Cosmetics', 'Alcohol')
 labels <- c('Seads', 'Spices', 'Chocolate,\nPralines', 'Coffee /\nTea', 'Food / sweats\nin general', 'Specialties from\nthe whole country /\nEU / world', 'Flowers', 'Candles', 'Cosmetics', 'Alcohol')
