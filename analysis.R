@@ -151,12 +151,18 @@ summary(surveydata1)
 # Plot Histogram of One Variable
 hist(surveydata1$`Chocolate, Pralines`)
 
+
+
+
+
 # different gift items (G02Q07)
 items <- c('Seads', 'Spices', 'Chocolate, Pralines', 'Coffee / Tea', 'Food / sweats in general', 'Specialties from the whole country / EU / world', 'Flowers', 'Candles', 'Cosmetics', 'Alcohol')
 labels <- c('Seads', 'Spices', 'Chocolate,\nPralines', 'Coffee /\nTea', 'Food / sweats\nin general', 'Specialties from\nthe whole country /\nEU / world', 'Flowers', 'Candles', 'Cosmetics', 'Alcohol')
 
-giftitems <- reshape(surveydata[15:24], times = items, timevar = "gift", direction = "long", 
-                     varying = 1:10, v.names = "rating")
+giftitems <- reshape(as.data.frame(surveydata[15:24]), times = items,
+                     timevar = "gift", direction = "long",
+                     varying = 1:10, v.names = "rating", idvar = "participant")
+
 rownames(giftitems) <- 1:nrow(giftitems)
 giftitems$gift <- as.factor(giftitems$gift)
 
@@ -168,11 +174,6 @@ itemsplot <- ggplot(giftitems) +
   ggtitle("G02Q07 Popularity of gift box items") +
   scale_x_discrete(labels= labels)
 itemsplot
-
-#for this plot I get a mistake message: Fehler: Assigned data `ids` must be compatible with existing data.
-# x Existing data has 510 rows.
-# x Assigned data has 51 rows.
-# ℹ Only vectors of size 1 are recycled.
 
 
 # Format yes/no answer as Factor Variable
