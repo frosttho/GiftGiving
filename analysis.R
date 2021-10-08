@@ -185,6 +185,13 @@ surveydata$G01Q04 <- as.factor(surveydata$G01Q04)
 # Show percentage of the two answers
 summary(surveydata$G01Q04)/nrow(surveydata)
 
+
+
+# Share of early / late buyers
+surveydata$G01Q17 <- as.factor(surveydata$G01Q17)
+summary(surveydata$G01Q17)/nrow(surveydata)
+
+
 # plot a simple bar diagram
 plot <- ggplot(surveydata) +
   geom_bar(aes(x = G01Q04)) +
