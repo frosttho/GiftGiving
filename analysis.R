@@ -19,16 +19,23 @@
 
 # 00 - Setup #############################
 
+# setwd("~/Studium/Master/Module/5A2M21 Advanced Topics in Digital Marketing/Gruppenarbeit/GiftGiving")
+
+# install.packages("tidyverse")
+# install.packages("fastDummies")
+# install.packages("openxlsx")
+# install.packages("data.table")
+
+
 library(tidyverse)
 library(fastDummies)
-# install.packages("openxlsx")
 library(openxlsx)
 library(data.table)
 
+
 # 01 - Read data #########################
 
-# surveydata <- read_csv(file = "results-survey282822_20211004-1449.csv")
-surveydata <- read_csv(file = "results-survey282822_20211005-1218.csv")
+surveydata <- read_csv(file = "results-survey282822_20211007-1755.csv")
 
 # 02 - Clean data #########################
 
@@ -36,10 +43,10 @@ surveydata <- read_csv(file = "results-survey282822_20211005-1218.csv")
 surveydata <- filter(surveydata, !is.na(submitdate))
 
 # delete answer where control question is wrong
-surveydata1 <- surveydata[surveydata$`G02Q10[SQ053]`  == 4, ]
+surveydata <- surveydata[surveydata$`G02Q10[SQ053]`  == 4, ]
 
 # remove control question
-surveydata1 <- subset(surveydata1, select = -c(`G02Q10[SQ053]`) )
+surveydata1 <- subset(surveydata, select = -c(`G02Q10[SQ053]`) )
 
 # remove time stamp
 surveydata1 <- subset(surveydata1, select = -c(submitdate) )
