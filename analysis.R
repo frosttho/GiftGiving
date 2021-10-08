@@ -166,17 +166,46 @@ giftitems <- reshape(as.data.frame(surveydata[15:24]), times = items,
 rownames(giftitems) <- 1:nrow(giftitems)
 giftitems$gift <- as.factor(giftitems$gift)
 
-itemsplot <- ggplot(giftitems) +
+itemsplot <- ggplot(giftitems, aes(x = gift, y = rating, fill = gift)) +
   theme_classic() +
-  geom_boxplot(aes(x = gift, y = rating)) +
+  geom_boxplot() +
+  geom_jitter(color="black", size=0.4, alpha=0.9) +
   ylab("Rating (1 to 5)") +
   xlab("") +
   ggtitle("G02Q07 Popularity of gift box items") +
-  scale_x_discrete(labels= labels)
+  scale_x_discrete(labels= labels) +
+  theme(legend.position="none") +
+  scale_fill_brewer(palette="PuBuGn")
 itemsplot
 
 
-# 04.02 - Familiarity of the problem #############
+
+# 04.02 - popularity of different site functionalities (G02Q07) #####
+functionalities <- c('intuitive user design', 'Customized packaging with personal pictures', 'a connection to your personal calendar with a reminder of important birthday dates', 'recommendation of presents based on characteristics of the recipient', 'a personal wishlist in your profile with your own personal preferences to help others finding the perfect gift for you (milk or dark chocolate, coffee or tea, ...)')
+func_labels <- c('intuitive user design', 'Customized packaging\nwith personal pictures', 'a connection to your\npersonal calendar with a reminder\nof important birthday dates', 'recommendation of presents\nbased on characteristics\nof the recipient', 'a personal wishlist in your profile\nwith your own personal preferences')
+
+func <- reshape(as.data.frame(surveydata[c(27:29, 31:32)]), times = functionalities,
+                     timevar = "functionality", direction = "long",
+                     varying = 1:5, v.names = "rating", idvar = "participant")
+
+rownames(func) <- 1:nrow(func)
+func$functionality <- as.factor(func$functionality)
+
+funcplot <- ggplot(func, aes(x = functionality, y = rating, fill = functionality)) +
+  theme_classic() +
+  geom_boxplot() +
+  geom_jitter(color="black", size=0.4, alpha=0.9) +
+  ylab("Rating (1 to 5)") +
+  xlab("") +
+  ggtitle("G02Q10 Popularity of service functionalities") +
+  scale_x_discrete(labels= func_labels) +
+  theme(legend.position="none") +
+  scale_fill_brewer(palette="PuBuGn")
+funcplot
+
+
+
+# 04.03 - Some simple percentages #############
 
 # Format yes/no answer as Factor Variable
 surveydata$G01Q04 <- as.factor(surveydata$G01Q04)
