@@ -155,7 +155,7 @@ hist(surveydata1$`Chocolate, Pralines`)
 
 
 
-# different gift items (G02Q07)
+# 04.01 - popularity of the different gift items (G02Q07) #####
 items <- c('Seads', 'Spices', 'Chocolate, Pralines', 'Coffee / Tea', 'Food / sweats in general', 'Specialties from the whole country / EU / world', 'Flowers', 'Candles', 'Cosmetics', 'Alcohol')
 labels <- c('Seads', 'Spices', 'Chocolate,\nPralines', 'Coffee /\nTea', 'Food / sweats\nin general', 'Specialties from\nthe whole country /\nEU / world', 'Flowers', 'Candles', 'Cosmetics', 'Alcohol')
 
@@ -175,6 +175,8 @@ itemsplot <- ggplot(giftitems) +
   scale_x_discrete(labels= labels)
 itemsplot
 
+
+# 04.02 - Familiarity of the problem #############
 
 # Format yes/no answer as Factor Variable
 surveydata$G01Q04 <- as.factor(surveydata$G01Q04)
