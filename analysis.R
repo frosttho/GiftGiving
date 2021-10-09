@@ -169,7 +169,6 @@ giftitems$gift <- as.factor(giftitems$gift)
 itemsplot <- ggplot(giftitems, aes(x = gift, y = rating, fill = gift)) +
   theme_classic() +
   geom_boxplot() +
-  geom_jitter(color="black", size=0.4, alpha=0.9) +
   ylab("Rating (1 to 5)") +
   xlab("") +
   ggtitle("G02Q07 Popularity of gift box items") +
@@ -194,7 +193,6 @@ func$functionality <- as.factor(func$functionality)
 funcplot <- ggplot(func, aes(x = functionality, y = rating, fill = functionality)) +
   theme_classic() +
   geom_boxplot() +
-  geom_jitter(color="black", size=0.4, alpha=0.9) +
   ylab("Rating (1 to 5)") +
   xlab("") +
   ggtitle("G02Q10 Popularity of service functionalities") +
