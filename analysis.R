@@ -218,6 +218,10 @@ summary(surveydata$G01Q04)/nrow(surveydata)
 surveydata$G01Q17 <- as.factor(surveydata$G01Q17)
 summary(surveydata$G01Q17)/nrow(surveydata)
 
+#Share of online gifts
+surveydata$G01Q19 <- as.factor(surveydata$G01Q19)
+summary(surveydata$G01Q19)/nrow(surveydata)
+
 
 # plot a simple bar diagram
 plot <- ggplot(surveydata) +
@@ -227,3 +231,8 @@ plot <- ggplot(surveydata) +
   ggtitle("G01Q04 Familiarity of problem situation") +
   coord_flip()
 plot
+
+
+# 04.04 - Sustainability ##########################
+
+summary(surveydata$G02Q09)
