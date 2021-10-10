@@ -36,7 +36,9 @@ library(data.table)
 # Function to get share of yes of a factor df yes / no
 
 getmean <- function(df) {
-  return(as.numeric(summary(df)[2])/length(df))
+  share <- as.numeric(summary(df)[2])/length(df)
+  number <- as.numeric(summary(df)[2])
+  return(data.frame(share, number))
 }
 
 # 01 - Read data #########################
@@ -249,13 +251,15 @@ plot
 surveydata$G02Q02 <- as.factor(surveydata$G02Q02)
 
 agemeans <- tapply(X = surveydata$G02Q02, INDEX = surveydata$G03Q03, getmean)
-agemeans <- as.data.frame(unlist(agemeans))
-colnames(agemeans) <- "mean"
+agemeans <- as.data.frame(agemeans)
+agemeans$age <- rownames(agemeans)
+agemeans <- as.data.frame(unnest_wider(agemeans, agemeans))
 
-ageplot <- ggplot(agemeans, aes(x = rownames(agemeans), y = mean)) +
+ageplot <- ggplot(agemeans, aes(x = age, y = share)) +
   geom_col() +
   scale_x_discrete(limits = c("18-23", "24-30", "31-45", "46-60", ">60")) +
   ggtitle("Prospective users per age group") +
+  geom_text(aes(label = number), vjust = -0.3) +
   xlab("Age group") +
   ylab("Share of prospective users")
 ageplot
