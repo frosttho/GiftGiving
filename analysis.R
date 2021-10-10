@@ -33,6 +33,12 @@ library(openxlsx)
 library(data.table)
 
 
+# Function to get share of yes of a factor df yes / no
+
+getmean <- function(df) {
+  return(as.numeric(summary(df)[2])/length(df))
+}
+
 # 01 - Read data #########################
 
 surveydata <- read_csv(file = "results-survey282822_20211009-1210.csv")
@@ -212,6 +218,10 @@ surveydata$G01Q04 <- as.factor(surveydata$G01Q04)
 # Show percentage of the two answers
 summary(surveydata$G01Q04)/nrow(surveydata)
 
+# Show numbers in each age group
+surveydata$G03Q03 <- as.factor(surveydata$G03Q03)
+summary(surveydata$G03Q03)
+
 
 
 # Share of early / late buyers
@@ -233,6 +243,25 @@ plot <- ggplot(surveydata) +
 plot
 
 
-# 04.04 - Sustainability ##########################
+# 04.04 - Service Usage by age ####################
+
+# generate mean data per age group
+surveydata$G02Q02 <- as.factor(surveydata$G02Q02)
+
+agemeans <- tapply(X = surveydata$G02Q02, INDEX = surveydata$G03Q03, getmean)
+agemeans <- as.data.frame(unlist(agemeans))
+colnames(agemeans) <- "mean"
+
+ageplot <- ggplot(agemeans, aes(x = rownames(agemeans), y = mean)) +
+  geom_col() +
+  scale_x_discrete(limits = c("18-23", "24-30", "31-45", "46-60", ">60")) +
+  ggtitle("Prospective users per age group") +
+  xlab("Age group") +
+  ylab("Share of prospective users")
+ageplot
+
+
+
+# 04.05 - Sustainability ##########################
 
 summary(surveydata$G02Q09)
