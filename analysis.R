@@ -31,6 +31,7 @@ library(tidyverse)
 library(fastDummies)
 library(openxlsx)
 library(data.table)
+library(stargazer)
 
 
 # Function to get share of yes of a factor df yes / no
@@ -154,12 +155,10 @@ write.xlsx(list_of_text_answers, file = "survey_open_question_v1.xlsx", overwrit
 surveydata1 <- subset(surveydata1, select = - c(G01Q11, G02Q08, G02Q09, G02Q12))
 
 # 04 - Descriptive analysis ##############
-summary(surveydata1)
+stargazer(as.data.frame(surveydata1), type = 'text')
 
 # Plot Histogram of One Variable
 hist(surveydata1$`Chocolate, Pralines`)
-
-
 
 
 
@@ -263,8 +262,6 @@ ageplot <- ggplot(agemeans, aes(x = age, y = share)) +
   xlab("Age group") +
   ylab("Share of prospective users")
 ageplot
-
-
 
 # 04.05 - Sustainability ##########################
 
