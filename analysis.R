@@ -25,13 +25,14 @@
 # install.packages("fastDummies")
 # install.packages("openxlsx")
 # install.packages("data.table")
-
+# install.packages("sqldf")
 
 library(tidyverse)
 library(fastDummies)
 library(openxlsx)
 library(data.table)
 library(stargazer)
+library(sqldf)
 
 
 # Function to get share of yes of a factor df yes / no
@@ -41,6 +42,14 @@ getmean <- function(df) {
   number <- as.numeric(summary(df)[2])
   return(data.frame(share, number))
 }
+
+# set plot format
+plot_theme <-   theme_minimal() +
+  theme(legend.position = "bottom",
+        title = element_text(size = 13, face = "bold"),
+        axis.title = element_text(size = 12),
+        #centre title
+        plot.title = element_text(hjust = 0.5))
 
 # 01 - Read data #########################
 
@@ -76,8 +85,8 @@ for(i in 1:length(newnames)) names(surveydata1)[names(surveydata1) == oldnames[i
 
 gifts_numbers <- c('G02Q07[SQ001]', 'G02Q07[SQ012]','G02Q07[SQ022]','G02Q07[SQ032]','G02Q07[SQ042]',
                    'G02Q07[SQ052]','G02Q07[SQ062]','G02Q07[SQ072]','G02Q07[SQ082]','G02Q07[SQ092]')
-gifts_names <- c('Seads', 'Spices', 'Chocolate, Pralines', 'Coffee / Tea', 'Food / sweats in general', 
-                 'Specialties from the whole country / EU / world', 'Flowers', 'Candles', 'Cosmetics', 
+gifts_names <- c('Seads', 'Spices', 'Chocolate_Pralines', 'Coffee_Tea', 'Food_sweats', 
+                 'Specialties', 'Flowers', 'Candles', 'Cosmetics', 
                  'Alcohol')
 for(i in 1:length(gifts_names)) names(surveydata1)[names(surveydata1) == gifts_numbers[i]] = gifts_names[i]
 
@@ -185,7 +194,6 @@ itemsplot <- ggplot(giftitems, aes(x = gift, y = rating, fill = gift)) +
 itemsplot
 
 
-
 # 04.02 - popularity of different site functionalities (G02Q07) #####
 functionalities <- c('intuitive user design', 'Customized packaging with personal pictures', 'a connection to your personal calendar with a reminder of important birthday dates', 'recommendation of presents based on characteristics of the recipient', 'a personal wishlist in your profile with your own personal preferences to help others finding the perfect gift for you (milk or dark chocolate, coffee or tea, ...)')
 func_labels <- c('intuitive user design', 'Customized packaging\nwith personal pictures', 'a connection to your\npersonal calendar with a reminder\nof important birthday dates', 'recommendation of presents\nbased on characteristics\nof the recipient', 'a personal wishlist in your profile\nwith your own personal preferences')
@@ -263,6 +271,16 @@ ageplot <- ggplot(agemeans, aes(x = age, y = share)) +
   ylab("Share of prospective users")
 ageplot
 
+# plot theme
+ageplot2 <- ggplot(agemeans, aes(x = age, y = share)) +
+  geom_col() +
+  scale_x_discrete(limits = c("18-23", "24-30", "31-45", "46-60", ">60")) +
+  geom_text(aes(label = number), vjust = -0.3) +
+  labs(x="Age group",y="Share of prospective user",
+       title="Prospective users per age group") +
+  plot_theme
+ageplot2
+
 # 04.05 - Sustainability ##########################
 
 summary(surveydata$G02Q09)
@@ -271,4 +289,37 @@ summary(surveydata$G02Q09)
 t.test(surveydata1$services_fit_Yes ~ surveydata1$gender_Male)
 # no difference
 
+# for products
+# only female or male
+surveydata2 <- subset(surveydata1, `gender_N/A` =='0')
 
+# gender means
+gender_difference <- sqldf('SELECT gender_male AS MALE, round(AVG(Seads), 2) AS Seads, round(AVG(Spices), 2) AS Spices,
+      round(AVG(Chocolate_Pralines), 2) AS Chocolate_Pralines, round(AVG(Coffee_Tea), 2) AS Coffee_Tea, 
+      round(AVG(Food_sweats), 2) AS Food_sweats, round(AVG(Specialties), 2) AS Specialties,
+      round(AVG(Flowers), 2) AS Flowers, round(AVG(Candles), 2) AS Candles,
+      round(AVG(Cosmetics), 2) AS Cosmetics,round(AVG(Alcohol), 2) AS Alcohol
+      FROM surveydata2 GROUP BY gender_male')
+
+# replace 0 for female and 1 for male
+gender_difference$MALE[gender_difference$MALE=="0"]<-"female"
+gender_difference$MALE[gender_difference$MALE=="1"]<-"male"
+# frist colum to row name
+gender_difference2 <- gender_difference[,-1]
+rownames(gender_difference2) <- gender_difference[,1]
+
+# transpose
+gender_difference2 <- as.data.frame(t(gender_difference2))
+
+products <- c('Seads', 'Spices', 'Chocolate_Pralines', 'Coffee_Tea', 'Food_sweats',
+              'Specialties', 'Flowers', 'Candles', 'Cosmetics', 'Alcohol')
+gender_difference2$product=products
+
+genderplot <- ggplot(gender_difference2, aes(x = product)) +
+  geom_point(aes(y=male, color="Men", size = 4 )) + 
+  geom_point(aes(y=female, color="Woman",size = 4 )) +
+  scale_size(guide="none") +
+  labs(x="Product",y="Rating (1 to 5)",
+       title='Difference in product preferences based on gender') +
+  plot_theme
+genderplot
