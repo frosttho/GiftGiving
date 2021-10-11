@@ -266,3 +266,9 @@ ageplot
 # 04.05 - Sustainability ##########################
 
 summary(surveydata$G02Q09)
+
+# 04.06 gender t-test ----
+t.test(surveydata1$services_fit_Yes ~ surveydata1$gender_Male)
+# no difference
+
+
