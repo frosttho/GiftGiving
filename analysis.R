@@ -172,8 +172,7 @@ hist(surveydata1$`Chocolate, Pralines`)
 
 
 # 04.01 - popularity of the different gift items (G02Q07) #####
-items <- c('Seads', 'Spices', 'Chocolate, Pralines', 'Coffee / Tea', 'Food / sweats in general', 'Specialties from the whole country / EU / world', 'Flowers', 'Candles', 'Cosmetics', 'Alcohol')
-labels <- c('Seads', 'Spices', 'Chocolate,\nPralines', 'Coffee /\nTea', 'Food / sweats\nin general', 'Specialties from\nthe whole country /\nEU / world', 'Flowers', 'Candles', 'Cosmetics', 'Alcohol')
+items <- c('Seads', 'Spices', 'Chocolate,\nPralines', 'Coffee /\nTea', 'Food / sweats\nin general', 'Specialties from\nthe whole country /\nEU / world', 'Flowers', 'Candles', 'Cosmetics', 'Alcohol')
 
 giftitems <- reshape(as.data.frame(surveydata[15:24]), times = items,
                      timevar = "gift", direction = "long",
@@ -188,15 +187,13 @@ itemsplot <- ggplot(giftitems, aes(x = gift, y = rating, fill = gift)) +
   ylab("Rating (1 to 5)") +
   xlab("") +
   ggtitle("G02Q07 Popularity of gift box items") +
-  scale_x_discrete(labels= labels) +
   theme(legend.position="none") +
   scale_fill_brewer(palette="PuBuGn")
 itemsplot
 
 
 # 04.02 - popularity of different site functionalities (G02Q07) #####
-functionalities <- c('intuitive user design', 'Customized packaging with personal pictures', 'a connection to your personal calendar with a reminder of important birthday dates', 'recommendation of presents based on characteristics of the recipient', 'a personal wishlist in your profile with your own personal preferences to help others finding the perfect gift for you (milk or dark chocolate, coffee or tea, ...)')
-func_labels <- c('intuitive user design', 'Customized packaging\nwith personal pictures', 'a connection to your\npersonal calendar with a reminder\nof important birthday dates', 'recommendation of presents\nbased on characteristics\nof the recipient', 'a personal wishlist in your profile\nwith your own personal preferences')
+functionalities <- c('intuitive user design', 'Customized packaging\nwith personal pictures', 'a connection to your\npersonal calendar with a reminder\nof important birthday dates', 'recommendation of presents\nbased on characteristics\nof the recipient', 'a personal wishlist in your profile\nwith your own personal preferences')
 
 func <- reshape(as.data.frame(surveydata[c(27:29, 31:32)]), times = functionalities,
                      timevar = "functionality", direction = "long",
@@ -211,7 +208,6 @@ funcplot <- ggplot(func, aes(x = functionality, y = rating, fill = functionality
   ylab("Rating (1 to 5)") +
   xlab("") +
   ggtitle("G02Q10 Popularity of service functionalities") +
-  scale_x_discrete(labels= func_labels) +
   theme(legend.position="none") +
   scale_fill_brewer(palette="PuBuGn")
 funcplot
